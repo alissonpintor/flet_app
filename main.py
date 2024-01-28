@@ -1,48 +1,27 @@
 import flet as ft
-import time
 
-def main(page: ft.Page):
+def main(page):
+    def btn_click(e):
+        if not txt_name.value:
+            txt_name.error_text = "Please enter your name"
+            page.update()
+        else:
+            name = txt_name.value
+            page.clean()
+            page.add(ft.Text(f"Hello, {name}!"))
 
-    def button_clicked(e):
-        page.add(ft.Text('Clicked!'))
+    txt_name = ft.TextField(label="Your name")
 
-    page.title = "Flet counter example"
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.add(txt_name, ft.ElevatedButton("Say hello!", on_click=btn_click))
 
-    t = ft.Text(value='Hello, world', color='green')
-
-    page.controls.append(t)
-    page.update()
-
-    for i in range(10):
-        t.value = f'Step {i}'
+    def checkbox_changed(e):
+        output_text.value = (
+            f"You have learned how to ski :  {todo_check.value}."
+        )
         page.update()
-        time.sleep(0.1)
-    
-    page.add(
-        ft.Row(controls=[
-            ft.Text('A'),
-            ft.Text('B'),
-            ft.Text('C')
-        ])
-    )
 
-    page.add(
-        ft.Row(controls=[
-            ft.TextField(label="Your name"),
-            ft.ElevatedButton(text="Click me!", on_click=button_clicked)
-        ])
-    )
-    page.update()
+    output_text = ft.Text()
+    todo_check = ft.Checkbox(label="ToDo: Learn how to use ski", value=False, on_change=checkbox_changed)
+    page.add(todo_check, output_text)
 
-    def add_clicked(e):
-        page.add(ft.Checkbox(label=new_task.value))
-        new_task.value = ""
-        new_task.focus()
-        new_task.update()
-
-    new_task = ft.TextField(hint_text="Whats needs to be done?", width=300)
-    page.add(ft.Row([new_task, ft.ElevatedButton("Add", on_click=add_clicked)]))
-
-
-ft.app(port=8000, target=main)
+ft.app(target=main)
