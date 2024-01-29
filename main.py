@@ -1,6 +1,8 @@
 import flet as ft
 
 def main(page):
+    page.theme = ft.Theme(color_scheme_seed=ft.colors.INDIGO)
+
     def btn_click(e):
         if not txt_name.value:
             txt_name.error_text = "Please enter your name"
@@ -20,7 +22,7 @@ def main(page):
         )
         page.update()
 
-    output_text = ft.Text()
+    output_text = ft.Text(color=ft.colors.PURPLE_800)
     todo_check = ft.Checkbox(label="ToDo: Learn how to use ski", value=False, on_change=checkbox_changed)
     page.add(todo_check, output_text)
 
